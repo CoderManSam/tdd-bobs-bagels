@@ -103,4 +103,31 @@ describe("Basket", () => {
     expect(result).toEqual(expected)
   })
 
+  it("adds to the quantity of an item already in the basket", () => {
+    // set up
+    const basket = new Basket()
+    basket.addToBasket("cream cheese bagel", 1.20, 1)
+    const expected = [{
+      item: "cream cheese bagel",
+      price: 1.20,
+      quantity: 2
+    }]
+    // execute
+    const result = basket.addToItemQuantity("cream cheese bagel", 1)
+    // verify
+    expect(result).toEqual(expected)
+  })
+
+  it("displays total sum at checkout", () => {
+    // set up
+    const basket = new Basket()
+    basket.addToBasket("cream cheese bagel", 1.20, 1)
+    basket.addToBasket("smoked salmon bagel", 1.80, 2)
+    const expected = 4.80
+    // execute
+    const result = basket.checkoutTotalSum()
+    // verify
+    expect(result).toEqual(expected)
+  })
+
 })

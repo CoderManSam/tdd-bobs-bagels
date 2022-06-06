@@ -6,7 +6,6 @@ class Basket {
 
     addToBasket(itemName, itemPrice, itemQuantity) {
 
-        // NEED TO ADD LOGIC FOR IF ADDING TO QUANTITY OF EXISTING ITEM NOT A WHOLE NEW ITEM
         // need to add tests for undefined/null
 
         const basketItem = {
@@ -61,6 +60,36 @@ class Basket {
         this.maxCapacity += increaseCapacityBy
 
         return this.maxCapacity
+    }
+
+    addToItemQuantity(itemName, itemQuantity) {
+
+        // need to add tests for undefined/null
+
+        const itemToIncreaseQuantity = this.items.find(item => item.item === itemName)
+
+        itemToIncreaseQuantity.quantity += itemQuantity
+
+        if ((itemToIncreaseQuantity.quantity) > this.maxCapacity) {
+
+            return "Your basket is full, this item has not been added to your basket"
+
+        }
+
+        return this.items
+    }
+
+    checkoutTotalSum() {
+
+        let totalSum = 0
+
+        for(let i = 0; i < this.items.length; i++) {
+
+            totalSum += (this.items[i].quantity*this.items[i].price)
+
+        }
+
+        return totalSum
     }
 
 }
