@@ -1,9 +1,14 @@
 const Inventory = require('../inventory.json').inventory
 
+const current = new Date();
+const cDate = current.getFullYear() + '-' + (current.getMonth() + 1) + '-' + current.getDate();
+const cTime = current.getHours() + ":" + current.getMinutes() + ":" + current.getSeconds();
+
 class Basket {
     constructor () {
         this.items = []
         this.maxCapacity = 6
+        this.dateTime = cDate + ' ' + cTime;
     }
 
     addToBasket(itemName, itemPrice, itemQuantity) {
@@ -222,6 +227,51 @@ class Basket {
         return this.items
     }
 
+    // HAVEN'T WRITTEN A TEST FOR THIS METHOD AS THE DATETIME PART WILL CONSTANTLY BE CHANGING
+    // ALSO UNSURE HOW TO WRITE AN EXPECTED VALUE THAT'LL MATCH THE RESULT
+    // METHOD DOES CREATE AN ACCURATE RECEIPT WHEN USING BELOW CONSOLE LOG AND NODE
+    printReceipt() {
+
+        let receiptItems = ""
+
+        for (let i=0; i < this.items.length; i++) {
+
+            const priceByQuantity = this.items[i].price * this.items[i].quantityForSum
+
+            const rounded = Math.round((priceByQuantity + Number.EPSILON) * 100) / 100;
+
+            receiptItems += this.items[i].item + 
+                            "   " +
+                            this.items[i].quantity + 
+                            "   " +
+                            "£" + 
+                            (rounded) +
+                            "\n"
+
+        }
+
+        const receipt = "\n" +
+                        "~~~ Bob's Bagels ~~~ \n" +  "\n" +
+                        this.dateTime + "\n" + "\n" +
+                        "---------------------------- \n" + "\n" +
+                        receiptItems +
+                        "\n" +
+                        "---------------------------- \n" +
+                        "Total               £" +
+                        this.checkoutTotalSum() + "\n" +
+                        "\n" +
+                        "Thank you \n" +
+                        "for your order! \n"
+
+        return receipt
+    }
+
 }
+
+const basket = new Basket()
+basket.increaseBasketCapacity(2)
+basket.addToBasket("cream cheese bagel", 1.20, 4)
+basket.addToBasket("smoked salmon bagel", 1.80, 4)
+console.log(basket.printReceipt())
 
 module.exports = Basket
